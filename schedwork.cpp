@@ -38,7 +38,7 @@ bool schedule(
     sched.clear();
     
     if(dailyNeed*avail.size() > maxShifts*avail[0].size()){return false;}
-    vector<int> shiftCounter(sched[0].size());
+    vector<int> shiftCounter(avail[0].size());
     
     sched = std::vector<std::vector<Worker_T>>(avail.size());
     for(int i = 0;i<avail.size();i++){
@@ -64,7 +64,7 @@ bool scheduleWork(DailySchedule& sched, vector<int>& shiftCounter, const size_t 
                         sched[i][j] = k;
                         shiftCounter[k]++;
                         if(shiftCounter[k] <= maxShifts){
-                         if(scheduleWork(sched, shiftCounter, maxShifts, avail)){return true;}   
+                            if(scheduleWork(sched, shiftCounter, maxShifts, avail)){return true;}   
                         }
                         shiftCounter[k]--;
                     }
