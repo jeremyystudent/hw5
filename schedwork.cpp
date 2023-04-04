@@ -79,7 +79,6 @@ bool scheduleWork(DailySchedule& sched, const size_t workerCount, const size_t m
                 for(int k = 0;k<workerCount;k++){
                     if(avail[i][k] == 1){
                         sched[i][j] = k;
-                        cout << "Running recusion w/ worker " << k << " on " << i << "," << j << endl;
                         if(scheduleWork(sched, workerCount, maxShifts, avail)){return true;}
                     }
                 }
