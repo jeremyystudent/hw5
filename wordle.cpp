@@ -27,9 +27,11 @@ std::set<std::string> wordle(
         return result;
     }
     for(int i = 0;i<floating.size();i++){
-        string str = in; string newf = floating;
+        string str = in; 
+        string newf = floating;
         str[in.find("-")] = floating[i];
         newf.erase(i);
+        cout << "Running " << str << " with " << newf << endl;
         appendSet(result,wordle(str, newf, dict));
     }
     return result;
