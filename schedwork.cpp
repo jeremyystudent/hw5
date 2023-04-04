@@ -21,7 +21,7 @@ static const Worker_T INVALID_ID = (unsigned int)-1;
 
 
 // Add prototypes for any helper functions here
-bool scheduleWork(DailySchedule& sched, vector<int>& shiftCounter, const size_t maxShifts, const AvailabilityMatrix& avail);
+bool scheduleWork(DailySchedule& sched, vector<int>& shiftCounter, const size_t maxShifts, const AvailabilityMatrix& avail, pair<int,int> curr);
 
 // Add your implementation of schedule() and other helper functions here
 
@@ -50,30 +50,23 @@ bool schedule(
         sched[i] = temp;
     }
 
-    return scheduleWork(sched, shiftCounter, maxShifts, avail);
+    return scheduleWork(sched, shiftCounter, maxShifts, avail, make_pair<int,int>(0,0));
 
 
 }
   
-bool scheduleWork(DailySchedule& sched, vector<int>& shiftCounter, const size_t maxShifts, const AvailabilityMatrix& avail){
-    for(int i = 0;i<sched.size();i++){
-        for(int j = 0;j<sched[0].size();j++){
-            if(sched[i][j] == INVALID_ID){
-                for(int k = 0;k<avail[0].size();k++){
-                    if(avail[i][k] == 1 && find(sched[i].begin(), sched[i].end(), k) == sched[i].end()){
-                        sched[i][j] = k;
-                        shiftCounter[k]++;
-                        if(shiftCounter[k] <= maxShifts){
-                            if(scheduleWork(sched, shiftCounter, maxShifts, avail)){return true;}   
-                        }
-                        shiftCounter[k]--;
-                    }
-                }
-                sched[i][j] = INVALID_ID;
-                return false;
+bool scheduleWork(DailySchedule& sched, vector<int>& shiftCounter, const size_t maxShifts, const AvailabilityMatrix& avail, pair<int,int> curr){
+    for(int k = 0;k<avail[0].size();k++){
+        if(avail[curr.first][k] == 1 && find(sched[curr.first].begin(), sched[curr.first].end(), k) == sched[curr.first].end()){
+            sched[curr.first][curr.second] = k;
+            shiftCounter[k]++;
+            if(shiftCounter[k] <= maxShifts){
+                if(scheduleWork(sched, shiftCounter, maxShifts, avail, make_pair<int,int>(curr.first + curr.second/avail[0].size(),(curr.second+1)%avail[0].size()))){return true;}   
             }
+            shiftCounter[k]--;
         }
     }
-    return true;
+    sched[curr.first][curr.second] = INVALID_ID;
+    return false;
 }
 
