@@ -45,6 +45,7 @@ void appendSet(std::set<std::string> src, std::set<std::string> add){
     for(it = add.begin();it != add.end();++it){
         src.insert(*it);
     }
+    cout << "Source now has " << src.size() << " elements." << endl;
 }
 void fillBlank(std::string temp, std::set<std::string>& dest, const std::set<std::string>& dict){
     if(temp.find('-') == std::string::npos){
