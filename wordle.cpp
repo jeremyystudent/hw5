@@ -13,7 +13,7 @@ using namespace std;
 
 
 // Add prototypes of helper functions here
-void appendSet(std::set<std::string> src, std::set<std::string> add);
+void appendSet(std::set<std::string>& src, std::set<std::string> add);
 void fillBlank(std::string temp, std::set<std::string>& dest, const std::set<std::string>& dict);
 
 // Definition of primary wordle function
@@ -39,7 +39,7 @@ std::set<std::string> wordle(
 }
 
 // Define any helper functions here
-void appendSet(std::set<std::string> src, std::set<std::string> add){
+void appendSet(std::set<std::string>& src, std::set<std::string> add){
     cout << "Adding set with " << add.size() << " elements." << endl;
     std::set<std::string>::iterator it;
     for(it = add.begin();it != add.end();++it){
