@@ -87,5 +87,5 @@ bool scheduleWork(DailySchedule& sched, const size_t workerCount, const size_t m
             }
         }
     }
-    return checkShiftValid(workerCount, maxShifts, sched, avail);
+    return checkShiftValid(workerCount, maxShifts, sched);
 }
