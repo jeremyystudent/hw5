@@ -23,6 +23,7 @@ static const Worker_T INVALID_ID = (unsigned int)-1;
 // Add prototypes for any helper functions here
 bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const AvailabilityMatrix& avail);
 bool checkShiftValid(const size_t workerCount, const size_t maxShifts, const DailySchedule& sched);
+bool vectorContains(std::vector<Worker_T> vec, Worker_T target);
 
 // Add your implementation of schedule() and other helper functions here
 
@@ -58,12 +59,8 @@ bool checkShiftValid(const size_t workerCount, const size_t maxShifts, const Dai
     std::vector<int> counter(workerCount);
     for(int i = 0;i<workerCount;i++){counter[i] = 0;}
     for(int i = 0;i<sched.size();i++){
-        std::vector<bool> dailyCounter(sched[0].size());
-        for(int j = 0;j<sched[0].size();j++){dailyCounter[j] = false;}
         for(int j = 0;j<sched[i].size();j++){
             counter[sched[i][j]]++;
-            if(dailyCounter[sched[i][j]]){return false;}
-            dailyCounter[sched[i][j]] = true;
         }
     }
     for(int i = 0;i<workerCount;i++){
@@ -77,7 +74,7 @@ bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const Availabili
         for(int j = 0;j<sched[0].size();j++){
             if(sched[i][j] == INVALID_ID){
                 for(int k = 0;k<avail[0].size();k++){
-                    if(avail[i][k] == 1){
+                    if(avail[i][k] == 1 && !vectorContains(sched[i], k)){
                         sched[i][j] = k;
                         if(scheduleWork(sched, maxShifts, avail)){return true;}
                     }
@@ -88,4 +85,9 @@ bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const Availabili
         }
     }
     return checkShiftValid(avail[0].size(), maxShifts, sched);
+}
+
+bool vectorContains(std::vector<Worker_T> vec, Worker_T target){
+    for(int i = 0;i<vec.size();i++){if(vec[i] == target){return true;}}
+    return false;
 }
