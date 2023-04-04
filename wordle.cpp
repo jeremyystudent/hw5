@@ -15,6 +15,7 @@ using namespace std;
 // Add prototypes of helper functions here
 void appendSet(std::set<std::string>& src, std::set<std::string> add);
 void fillBlank(std::string temp, std::set<std::string>& dest, const std::set<std::string>& dict);
+std::set<int> countDash(std::string str);
 
 // Definition of primary wordle function
 std::set<std::string> wordle(
@@ -26,13 +27,12 @@ std::set<std::string> wordle(
         fillBlank(in, result, dict);
         return result;
     }
-    for(int i = 0;i<floating.size();i++){
+    std::set<int> dashes = countDash(in);
+    std::set<int>::iterator it;
+    for(it = dashes.begin();it != dashes.end();++it){
         string str = in; 
-        string newf = floating;
-        str[in.find("-")] = floating[i];
-        newf.erase(i);
-        cout << "Running " << str << " with " << newf << endl;
-        appendSet(result,wordle(str, newf, dict));
+        str[*it] = floating[0];
+        appendSet(result,wordle(str, floating.substr(1), dict));
     }
     return result;
 
@@ -57,4 +57,11 @@ void fillBlank(std::string temp, std::set<std::string>& dest, const std::set<std
             fillBlank(in, dest, dict);
         }
     }
+}
+std::set<int> countDash(std::string str){
+    std::set<int> count;
+    for(int i = 0;i<str.size();i++){
+        if(str[i] == '-'){count.insert(i);}
+    }
+    return count;
 }
