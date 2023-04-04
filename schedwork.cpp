@@ -76,7 +76,9 @@ bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const Availabili
                 for(int k = 0;k<avail[0].size();k++){
                     if(avail[i][k] == 1 && !vectorContains(sched[i], k)){
                         sched[i][j] = k;
-                        if(scheduleWork(sched, maxShifts, avail)){return true;}
+                        if(checkShiftValid(avail[0].size(), maxShifts, sched)){
+                            if(scheduleWork(sched, maxShifts, avail)){return true;}
+                        }
                     }
                 }
                 sched[i][j] = INVALID_ID;
@@ -91,3 +93,4 @@ bool vectorContains(std::vector<Worker_T> vec, Worker_T target){
     for(int i = 0;i<vec.size();i++){if(vec[i] == target){return true;}}
     return false;
 }
+
