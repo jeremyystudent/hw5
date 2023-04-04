@@ -56,7 +56,7 @@ bool schedule(
 }
   
 bool scheduleWork(DailySchedule& sched, vector<int>& shiftCounter, const size_t maxShifts, const AvailabilityMatrix& avail, int row, int col){
-    if(row > avail.size()){return true;}
+    if(row >= avail.size()){return true;}
     for(int k = 0;k<avail[0].size();k++){
         if(avail[row][k] == 1 && find(sched[row].begin(), sched[row].end(), k) == sched[row].end()){
             sched[row][col] = k;
