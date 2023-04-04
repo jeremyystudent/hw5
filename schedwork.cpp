@@ -80,10 +80,10 @@ bool scheduleWork(DailySchedule& sched, const size_t workerCount, const size_t m
                     if(avail[i][k] == 1){
                         sched[i][j] = k;
                         if(scheduleWork(sched, workerCount, maxShifts, avail)){return true;}
-                        sched[i][j] = INVALID_ID;
-                        return false;
                     }
                 }
+                sched[i][j] = INVALID_ID;
+                return false;
             }
         }
     }
