@@ -58,8 +58,12 @@ bool checkShiftValid(const size_t workerCount, const size_t maxShifts, const Dai
     std::vector<int> counter(workerCount);
     for(int i = 0;i<workerCount;i++){counter[i] = 0;}
     for(int i = 0;i<sched.size();i++){
+        std::vector<bool> dailyCounter(sched[0].size());
+        for(int j = 0;j<sched[0].size();j++){dailyCounter[j] = false;}
         for(int j = 0;j<sched[i].size();j++){
             counter[sched[i][j]]++;
+            if(dailyCounter[sched[i][j]]){return false;}
+            dailyCounter[sched[i][j]] = true;
         }
     }
     for(int i = 0;i<workerCount;i++){
