@@ -22,6 +22,7 @@ static const Worker_T INVALID_ID = (unsigned int)-1;
 
 // Add prototypes for any helper functions here
 bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const AvailabilityMatrix& avail);
+bool checkSingleValid(const Worker_T target, const size_t maxShifts, const DailySchedule& sched);
 
 // Add your implementation of schedule() and other helper functions here
 
@@ -68,10 +69,10 @@ bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const Availabili
         for(int j = 0;j<sched[0].size();j++){
             if(sched[i][j] == INVALID_ID){
                 for(int k = 0;k<avail[0].size();k++){
-                    if(avail[i][k] == 1 && find(sched.begin(), sched.end(), k) == sched.end()){
+                    if(avail[i][k] == 1 && std::find(sched.begin(), sched.end(),k) == sched.end()){
                         sched[i][j] = k;
                         if(checkSingleValid(k, maxShifts, sched)){
-                            if(scheduleWork(sched, maxShifts, avail)){return true;}
+                            if(scheduleWork(sched, maxShifts, avail)){return true;}   
                         }
                     }
                 }
@@ -82,3 +83,4 @@ bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const Availabili
     }
     return true;
 }
+
