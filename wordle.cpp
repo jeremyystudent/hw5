@@ -40,6 +40,7 @@ std::set<std::string> wordle(
 
 // Define any helper functions here
 void appendSet(std::set<std::string> src, std::set<std::string> add){
+    cout << "Adding set with " << add.size() << " elements." << endl;
     std::set<std::string>::iterator it;
     for(it = add.begin();it != add.end();++it){
         src.insert(*it);
