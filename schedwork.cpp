@@ -65,9 +65,9 @@ bool scheduleWork(DailySchedule& sched, vector<int>& shiftCounter, const size_t 
                 if(scheduleWork(sched, shiftCounter, maxShifts, avail, row + (col+1)/avail[0].size(), (col+1)%avail[0].size())){return true;}   
             }
             shiftCounter[k]--;
+            sched[row][col] = INVALID_ID;
         }
     }
-    sched[row][col] = INVALID_ID;
     return false;
 }
 
