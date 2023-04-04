@@ -69,6 +69,16 @@ bool checkShiftValid(const size_t workerCount, const size_t maxShifts, const Dai
     return true;
 }
 
+bool checkSingleValid(const Worker_T target, const size_t maxShifts, const DailySchedule& sched){
+    int count = 0;
+    for(int i = 0;i<sched.size();i++){
+        for(int j = 0;j<sched[i].size();j++){
+            if(sched[i][j] == target){count++;}
+        }
+    }
+    return count <= maxShifts;
+}
+
 bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const AvailabilityMatrix& avail){
     for(int i = 0;i<sched.size();i++){
         for(int j = 0;j<sched[0].size();j++){
@@ -76,7 +86,7 @@ bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const Availabili
                 for(int k = 0;k<avail[0].size();k++){
                     if(avail[i][k] == 1 && !vectorContains(sched[i], k)){
                         sched[i][j] = k;
-                        if(checkShiftValid(avail[0].size(), maxShifts, sched)){
+                        if(checkSingleValid(k, maxShifts, sched)){
                             if(scheduleWork(sched, maxShifts, avail)){return true;}
                         }
                     }
