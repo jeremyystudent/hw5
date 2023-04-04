@@ -21,7 +21,7 @@ static const Worker_T INVALID_ID = (unsigned int)-1;
 
 
 // Add prototypes for any helper functions here
-bool scheduleWork(DailySchedule& sched, const size_t workerCount, const size_t maxShifts, const AvailabilityMatrix& avail);
+bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const AvailabilityMatrix& avail);
 bool checkShiftValid(const size_t workerCount, const size_t maxShifts, const DailySchedule& sched);
 
 // Add your implementation of schedule() and other helper functions here
@@ -49,7 +49,7 @@ bool schedule(
         sched[i] = temp;
     }
 
-    return scheduleWork(sched, avail.size(), maxShifts, avail);
+    return scheduleWork(sched, maxShifts, avail);
 
 
 }
@@ -72,15 +72,14 @@ bool checkShiftValid(const size_t workerCount, const size_t maxShifts, const Dai
     return true;
 }
 
-bool scheduleWork(DailySchedule& sched, const size_t workerCount, const size_t maxShifts, const AvailabilityMatrix& avail){
+bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const AvailabilityMatrix& avail){
     for(int i = 0;i<sched.size();i++){
         for(int j = 0;j<sched[0].size();j++){
             if(sched[i][j] == INVALID_ID){
-                for(int k = 0;k<workerCount;k++){
+                for(int k = 0;k<avail[0].size();k++){
                     if(avail[i][k] == 1){
                         sched[i][j] = k;
-                        cout << "Running recusion w/ worker " << k << " on " << i << "," << j << endl;
-                        if(scheduleWork(sched, workerCount, maxShifts, avail)){return true;}
+                        if(scheduleWork(sched, maxShifts, avail)){return true;}
                     }
                 }
                 sched[i][j] = INVALID_ID;
@@ -88,5 +87,5 @@ bool scheduleWork(DailySchedule& sched, const size_t workerCount, const size_t m
             }
         }
     }
-    return checkShiftValid(workerCount, maxShifts, sched);
+    return checkShiftValid(avail[0].size(), maxShifts, sched);
 }
