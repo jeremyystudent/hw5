@@ -22,8 +22,6 @@ static const Worker_T INVALID_ID = (unsigned int)-1;
 
 // Add prototypes for any helper functions here
 bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const AvailabilityMatrix& avail);
-bool checkShiftValid(const size_t workerCount, const size_t maxShifts, const DailySchedule& sched);
-bool vectorContains(std::vector<Worker_T> vec, Worker_T target);
 
 // Add your implementation of schedule() and other helper functions here
 
@@ -55,20 +53,6 @@ bool schedule(
 
 }
 
-bool checkShiftValid(const size_t workerCount, const size_t maxShifts, const DailySchedule& sched){
-    std::vector<int> counter(workerCount);
-    for(int i = 0;i<workerCount;i++){counter[i] = 0;}
-    for(int i = 0;i<sched.size();i++){
-        for(int j = 0;j<sched[i].size();j++){
-            counter[sched[i][j]]++;
-        }
-    }
-    for(int i = 0;i<workerCount;i++){
-        if(counter[i] > maxShifts){return false;}
-    }
-    return true;
-}
-
 bool checkSingleValid(const Worker_T target, const size_t maxShifts, const DailySchedule& sched){
     int count = 0;
     for(int i = 0;i<sched.size();i++){
@@ -84,7 +68,7 @@ bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const Availabili
         for(int j = 0;j<sched[0].size();j++){
             if(sched[i][j] == INVALID_ID){
                 for(int k = 0;k<avail[0].size();k++){
-                    if(avail[i][k] == 1 && !vectorContains(sched[i], k)){
+                    if(avail[i][k] == 1 && find(sched.begin(), sched.end(), k) == sched.end()){
                         sched[i][j] = k;
                         if(checkSingleValid(k, maxShifts, sched)){
                             if(scheduleWork(sched, maxShifts, avail)){return true;}
@@ -96,11 +80,5 @@ bool scheduleWork(DailySchedule& sched, const size_t maxShifts, const Availabili
             }
         }
     }
-    return checkShiftValid(avail[0].size(), maxShifts, sched);
+    return true;
 }
-
-bool vectorContains(std::vector<Worker_T> vec, Worker_T target){
-    for(int i = 0;i<vec.size();i++){if(vec[i] == target){return true;}}
-    return false;
-}
-
