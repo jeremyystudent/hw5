@@ -40,15 +40,6 @@ bool schedule(
     
     if(dailyNeed*avail.size() > maxShifts*avail[0].size()){return false;}
     
-    sched = std::vector<std::vector<Worker_T>>(avail.size());
-    for(int i = 0;i<avail.size();i++){
-        std::vector<Worker_T> temp(dailyNeed);
-        for(int j = 0;j<dailyNeed;j++){
-            temp[j] = INVALID_ID;
-        }
-        sched[i] = temp;
-    }
-
     return scheduleWork(sched, maxShifts, avail);
 
 
